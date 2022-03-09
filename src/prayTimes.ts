@@ -122,6 +122,7 @@ class PrayTimes {
           midnight: this.numbreToTime(this.midnight(sunset, sunrise, fajr)),
         },
         method: this.config.method.name,
+        timeFormat: "24H",
       };
     } catch (error: any) {
       throw new Error(error);

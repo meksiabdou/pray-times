@@ -1,13 +1,18 @@
 {
-  "name": "pray-times",
+  "name": "@meksiabdou/pray-times",
   "version": "1.0.0",
-  "description": "",
+  "description": "مواقيت الصلاة",
   "main": "index.js",
   "scripts": {
     "prepare": "tsc",
-    "build": "tsc",
+    "build": "tsc --outDir dist",
     "start": "ts-node src/index.ts"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/meksiabdou/pray-times.git"
+  },
+  "homepage": "https://github.com/meksiabdou//pray-times#readme",
   "keywords": [],
   "author": "",
   "license": "ISC",
