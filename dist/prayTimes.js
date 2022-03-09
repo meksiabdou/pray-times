@@ -82,9 +82,15 @@ class PrayTimes {
         };
         this.midnight = (sunset, sunrise, fajr) => {
             if (this.config.method.params.midnight === "Jafari") {
-                return sunset + this.fix(sunset - fajr, 24) / 2;
+                return sunset + this.fix(fajr - sunset, 24) / 2;
             }
-            return sunset + this.fix(sunset - sunrise, 24) / 2;
+            return sunset + this.fix(sunrise - sunset, 24) / 2;
+        };
+        this.adjustTimes = (time) => {
+            if (time >= 24) {
+                return "00";
+            }
+            return time;
         };
         this.julian = () => {
             if (this.month <= 2) {
@@ -123,7 +129,7 @@ class PrayTimes {
         this.numbreToTime = (n) => {
             const hours = Math.trunc(n);
             const minutes = Math.ceil((n - hours) * 60);
-            return `${hours < 10 ? "0" + hours : hours}:${minutes < 10 ? "0" + minutes : minutes}`;
+            return `${hours < 10 ? "0" + hours : this.adjustTimes(hours)}:${minutes < 10 ? "0" + minutes : minutes}`;
         };
         this.dhuhrTime = () => {
             try {
@@ -278,3 +284,4 @@ class PrayTimes {
     }
 }
 exports.default = PrayTimes;
+//# sourceMappingURL=prayTimes.js.map

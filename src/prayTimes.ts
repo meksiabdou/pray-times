@@ -131,10 +131,18 @@ class PrayTimes {
 
   private midnight = (sunset: number, sunrise: number, fajr: number) => {
     if (this.config.method.params.midnight === "Jafari") {
-      return sunset + this.fix(sunset - fajr, 24) / 2;
+      return sunset + this.fix(fajr - sunset, 24) / 2;
     }
-    return sunset + this.fix(sunset - sunrise, 24) / 2;
+    return sunset + this.fix(sunrise - sunset, 24) / 2;
   };
+
+
+  private adjustTimes = (time: number) => {
+    if(time >= 24) {
+      return "00";
+    }
+    return time;
+  }
 
   private julian = (): number => {
     if (this.month <= 2) {
@@ -179,7 +187,7 @@ class PrayTimes {
   protected numbreToTime = (n: number) => {
     const hours = Math.trunc(n);
     const minutes = Math.ceil((n - hours) * 60);
-    return `${hours < 10 ? "0" + hours : hours}:${
+    return `${hours < 10 ? "0" + hours : this.adjustTimes(hours)}:${
       minutes < 10 ? "0" + minutes : minutes
     }`;
   };

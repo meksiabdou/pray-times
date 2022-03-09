@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "prepare": "tsc",
-    "build": "tsc --outDir dist",
+    "build": "tsc",
     "start": "ts-node src/index.ts"
   },
   "repository": {

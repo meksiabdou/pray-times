@@ -1,0 +1,61 @@
+import { Config, Degrees, Localisation, Radians, Direction } from "./interfaces";
+declare class PrayTimes {
+    private localisation;
+    private dateNow;
+    private day;
+    private month;
+    private year;
+    private alpha?;
+    private declination?;
+    private noon?;
+    private utNoon?;
+    private localNoon?;
+    private methods;
+    private factors;
+    private config;
+    constructor(localisation: Localisation, config?: Config);
+    getTimes: () => {
+        times: {
+            imsak: string;
+            fajr: string;
+            sunrise: string;
+            dhuhr: string;
+            asr: string;
+            sunset: string;
+            maghrib: string;
+            isha: string;
+            midnight: string;
+        };
+        method: string;
+        timeFormat: string;
+    };
+    private midnight;
+    private adjustTimes;
+    private julian;
+    private sunPosition;
+    protected numbreToTime: (n: number) => string;
+    private dhuhrTime;
+    private asrAlt;
+    private asrTime;
+    protected arcCalc: (angle?: Degrees) => number;
+    protected sunAngleTime: (time: number, angle?: number | undefined, direction?: Direction) => number;
+    private sunRise;
+    private sunSet;
+    private maghribTime;
+    private ishaTime;
+    private imsakTime;
+    private fajrTime;
+    protected degreesToRadians: (d: Degrees) => Radians;
+    protected radiansToDegrees: (r: Radians) => Degrees;
+    protected sin: (d: Degrees) => Radians;
+    protected cos: (d: Degrees) => Radians;
+    protected tan: (d: Degrees) => Radians;
+    protected arcsin: (d: Degrees) => Degrees;
+    protected arccos: (d: Degrees) => Degrees;
+    protected arctan: (d: Degrees) => Degrees;
+    protected arccot: (x: number) => Degrees;
+    protected fixAngle: (a: Degrees) => Degrees;
+    protected fix: (a: number, b: number) => number;
+}
+export default PrayTimes;
+//# sourceMappingURL=prayTimes.d.ts.map
