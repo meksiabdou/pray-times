@@ -110,7 +110,7 @@ class PrayTimes {
       const sunrise = this.sunRise();
       const fajr = this.fajrTime();
       return {
-        times : {
+        times: {
           imsak: this.numbreToTime(this.imsakTime()),
           fajr: this.numbreToTime(fajr),
           sunrise: this.numbreToTime(sunrise),
@@ -121,7 +121,7 @@ class PrayTimes {
           isha: this.numbreToTime(this.ishaTime()),
           midnight: this.numbreToTime(this.midnight(sunset, sunrise, fajr)),
         },
-        method: this.config.method.name
+        method: this.config.method.name,
       };
     } catch (error: any) {
       throw new Error(error);
@@ -132,7 +132,7 @@ class PrayTimes {
     if (this.config.method.params.midnight === "Jafari") {
       return sunset + this.fix(sunset - fajr, 24) / 2;
     }
-    return sunset + (sunset - sunrise) / 2;
+    return sunset + this.fix(sunset - sunrise, 24) / 2;
   };
 
   private julian = (): number => {
