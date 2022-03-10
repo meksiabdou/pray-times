@@ -26,7 +26,7 @@ $ yarn add https://github.com/meksiabdou/pray-times
 ## Usage
 
 ```js
-import PrayTimes from "@meksiabdou/pray-times";
+import PrayTimes from "@meksiabdou/pray-times/dist";
 ```
 
 ### Parameters
@@ -40,7 +40,7 @@ import PrayTimes from "@meksiabdou/pray-times";
 ### Example
 
 ```ts
-import PrayTimes, { Config, Localisation } from "@meksiabdou/pray-times";
+import PrayTimes, { Config, Localisation } from "@meksiabdou/pray-times/dist";
 
 const geolocalisation:Localisation  =  { lat: 35.2, long: 0.641389 };
 const config:Config  =  { method: "MWL", madhab: "chafiism", timeZone: 1};
