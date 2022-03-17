@@ -34,7 +34,7 @@ import PrayTimes from "@meksiabdou/pray-times/dist";
 | Name | Type | Default Value |
 |:------:|:------:|:---------------:|
 | localisation | {lat : number, long: number} | {lat : 0, long: 0} |
-| config | {method : string, madhab: string, date: {day: number; month: number; year: number}, timeZone: number} | {method : "MWL", madhab: "chafiism", date: {day: 10; month: 3; year: 2022}, timeZone: 1} |
+| config | {method : string, madhab: string, date: {day: number; month: number; year: number}} | {method : "MWL", madhab: "chafiism", date: {day: 10; month: 3; year: 2022}} |
 
 
 ### Example
@@ -43,7 +43,7 @@ import PrayTimes from "@meksiabdou/pray-times/dist";
 import PrayTimes, { Config, Localisation } from "@meksiabdou/pray-times/dist";
 
 const geolocalisation:Localisation  =  { lat: 35.2, long: 0.641389 };
-const config:Config  =  { method: "MWL", madhab: "chafiism", timeZone: 1};
+const config:Config  =  { method: "MWL", madhab: "chafiism"};
 
 const prayTime = new PrayTimes(geolocalisation, config);
 
