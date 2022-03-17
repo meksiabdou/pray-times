@@ -70,8 +70,14 @@ class PrayTimes {
   };
 
   constructor(localisation: Localisation, config?: Config) {
-    if (localisation) {
-      this.localisation = localisation;
+
+    if (typeof localisation?.lat === 'number') {
+      this.localisation.lat = localisation.lat;
+    }
+
+    if (typeof localisation?.long === 'number') {
+      this.localisation.long = localisation.long;
+      this.config.timeZone = Math.round(this.localisation.long / 15);
     }
 
     if (config && config.date?.day) {
@@ -93,9 +99,9 @@ class PrayTimes {
       (this.config as any).madhab = config?.madhab.toLowerCase();
     }
 
-    if (config?.timeZone) {
+    /*if (config?.timeZone) {
       this.config.timeZone = config.timeZone;
-    }
+    }*/
 
     if (config?.method && this.methods[config?.method]) {
       this.config.method = this.methods[config?.method] as any;
@@ -138,7 +144,7 @@ class PrayTimes {
 
 
   private adjustTimes = (time: number) => {
-    if(time >= 24) {
+    if (time >= 24) {
       return "00";
     }
     return time;
@@ -187,9 +193,8 @@ class PrayTimes {
   protected numbreToTime = (n: number) => {
     const hours = Math.trunc(n);
     const minutes = Math.ceil((n - hours) * 60);
-    return `${hours < 10 ? "0" + hours : this.adjustTimes(hours)}:${
-      minutes < 10 ? "0" + minutes : minutes
-    }`;
+    return `${hours < 10 ? "0" + hours : this.adjustTimes(hours)}:${minutes < 10 ? "0" + minutes : minutes
+      }`;
   };
 
   private dhuhrTime = () => {
@@ -204,7 +209,7 @@ class PrayTimes {
     try {
       return this.arctan(
         this.factors[this.config.madhab as any] +
-          this.tan(this.localisation.lat - (this.declination as number))
+        this.tan(this.localisation.lat - (this.declination as number))
       );
     } catch (error: any) {
       throw new Error(error);
@@ -225,9 +230,9 @@ class PrayTimes {
       return this.arccos(
         (this.sin(angle) -
           this.sin(this.declination as number) *
-            this.sin(this.localisation.lat)) /
-          (this.cos(this.declination as number) *
-            this.cos(this.localisation.lat))
+          this.sin(this.localisation.lat)) /
+        (this.cos(this.declination as number) *
+          this.cos(this.localisation.lat))
       );
     } catch (error: any) {
       throw new Error(error);
