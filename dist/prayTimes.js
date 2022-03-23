@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 class PrayTimes {
     constructor(localisation, config) {
-        var _a, _b, _c, _d, _e;
+        var _a, _b, _c, _d, _e, _f, _g, _h;
         this.localisation = {
             long: 0,
             lat: 0,
@@ -88,20 +88,25 @@ class PrayTimes {
         };
         this.adjustTimes = (time) => {
             if (time >= 24) {
-                return "00";
+                return `0${time - 24}`;
             }
             return time;
         };
         this.julian = () => {
-            if (this.month <= 2) {
-                this.month = this.month + 12;
-                this.year = this.year - 1;
+            try {
+                if (this.month <= 2) {
+                    this.month = this.month + 12;
+                    this.year = this.year - 1;
+                }
+                const A = 367 * this.year;
+                const B = Math.floor((7 / 4) * (this.year + Math.floor((this.month + 9) / 12)));
+                const C = Math.floor(275 * (this.month / 9));
+                const D = this.day - 730531.5;
+                return A - B + C + D;
             }
-            const A = 367 * this.year;
-            const B = Math.floor((7 / 4) * (this.year + Math.floor((this.month + 9) / 12)));
-            const C = Math.floor(275 * (this.month / 9));
-            const D = this.day - 730531.5;
-            return A - B + C + D;
+            catch (error) {
+                throw new Error(error);
+            }
         };
         this.sunPosition = () => {
             try {
@@ -127,9 +132,14 @@ class PrayTimes {
             }
         };
         this.numbreToTime = (n) => {
-            const hours = Math.trunc(n);
-            const minutes = Math.ceil((n - hours) * 60);
-            return `${hours < 10 ? "0" + hours : this.adjustTimes(hours)}:${minutes < 10 ? "0" + minutes : minutes}`;
+            try {
+                const hours = Math.trunc(n);
+                const minutes = Math.ceil((n - hours) * 60);
+                return `${hours < 10 ? "0" + hours : this.adjustTimes(hours)}:${minutes < 10 ? "0" + minutes : minutes}`;
+            }
+            catch (error) {
+                throw new Error(error);
+            }
         };
         this.dhuhrTime = () => {
             try {
@@ -258,25 +268,29 @@ class PrayTimes {
             a = a - b * Math.floor(a / b);
             return a < 0 ? a + b : a;
         };
-        if (localisation) {
-            this.localisation = localisation;
+        if (typeof (localisation === null || localisation === void 0 ? void 0 : localisation.lat) === "number") {
+            this.localisation.lat = localisation.lat;
         }
-        if (config && ((_a = config.date) === null || _a === void 0 ? void 0 : _a.day)) {
-            this.day = (_b = config.date) === null || _b === void 0 ? void 0 : _b.day;
+        if (typeof (localisation === null || localisation === void 0 ? void 0 : localisation.long) === "number") {
+            this.localisation.long = localisation.long;
+            this.config.timeZone = Math.round(this.localisation.long / 15);
         }
-        if (config && ((_c = config.date) === null || _c === void 0 ? void 0 : _c.month)) {
+        if (config && typeof ((_a = config.date) === null || _a === void 0 ? void 0 : _a.day) === 'number' && ((_b = config.date) === null || _b === void 0 ? void 0 : _b.day)) {
+            this.day = (_c = config.date) === null || _c === void 0 ? void 0 : _c.day;
+        }
+        if (config && typeof ((_d = config.date) === null || _d === void 0 ? void 0 : _d.month) === 'number' && ((_e = config.date) === null || _e === void 0 ? void 0 : _e.month)) {
             this.month = config.date.month;
         }
-        if (config && ((_d = config.date) === null || _d === void 0 ? void 0 : _d.year)) {
+        if (config && typeof ((_f = config.date) === null || _f === void 0 ? void 0 : _f.year) === 'number' && ((_g = config.date) === null || _g === void 0 ? void 0 : _g.year)) {
             this.year = config.date.year;
         }
         if ((config === null || config === void 0 ? void 0 : config.madhab) &&
-            ["hanafi", "chafiism"].includes((_e = config === null || config === void 0 ? void 0 : config.madhab) === null || _e === void 0 ? void 0 : _e.toLowerCase())) {
+            ["hanafi", "chafiism"].includes((_h = config === null || config === void 0 ? void 0 : config.madhab) === null || _h === void 0 ? void 0 : _h.toLowerCase())) {
             this.config.madhab = config === null || config === void 0 ? void 0 : config.madhab.toLowerCase();
         }
-        if (config === null || config === void 0 ? void 0 : config.timeZone) {
-            this.config.timeZone = config.timeZone;
-        }
+        /*if (config?.timeZone) {
+          this.config.timeZone = config.timeZone;
+        }*/
         if ((config === null || config === void 0 ? void 0 : config.method) && this.methods[config === null || config === void 0 ? void 0 : config.method]) {
             this.config.method = this.methods[config === null || config === void 0 ? void 0 : config.method];
         }

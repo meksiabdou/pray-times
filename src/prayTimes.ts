@@ -70,25 +70,24 @@ class PrayTimes {
   };
 
   constructor(localisation: Localisation, config?: Config) {
-
-    if (typeof localisation?.lat === 'number') {
+    if (typeof localisation?.lat === "number") {
       this.localisation.lat = localisation.lat;
     }
 
-    if (typeof localisation?.long === 'number') {
+    if (typeof localisation?.long === "number") {
       this.localisation.long = localisation.long;
       this.config.timeZone = Math.round(this.localisation.long / 15);
     }
 
-    if (config && config.date?.day) {
+    if (config && typeof config.date?.day === 'number' && config.date?.day) {
       this.day = config.date?.day;
     }
 
-    if (config && config.date?.month) {
+    if (config && typeof config.date?.month === 'number' && config.date?.month) {
       this.month = config.date.month;
     }
 
-    if (config && config.date?.year) {
+    if (config && typeof config.date?.year === 'number' && config.date?.year) {
       this.year = config.date.year;
     }
 
@@ -142,27 +141,30 @@ class PrayTimes {
     return sunset + this.fix(sunrise - sunset, 24) / 2;
   };
 
-
   private adjustTimes = (time: number) => {
     if (time >= 24) {
-      return "00";
+      return `0${time - 24}`;
     }
     return time;
-  }
+  };
 
   private julian = (): number => {
-    if (this.month <= 2) {
-      this.month = this.month + 12;
-      this.year = this.year - 1;
-    }
+    try {
+      if (this.month <= 2) {
+        this.month = this.month + 12;
+        this.year = this.year - 1;
+      }
 
-    const A = 367 * this.year;
-    const B = Math.floor(
-      (7 / 4) * (this.year + Math.floor((this.month + 9) / 12))
-    );
-    const C = Math.floor(275 * (this.month / 9));
-    const D = this.day - 730531.5;
-    return A - B + C + D;
+      const A = 367 * this.year;
+      const B = Math.floor(
+        (7 / 4) * (this.year + Math.floor((this.month + 9) / 12))
+      );
+      const C = Math.floor(275 * (this.month / 9));
+      const D = this.day - 730531.5;
+      return A - B + C + D;
+    } catch (error: any) {
+      throw new Error(error);
+    }
   };
 
   private sunPosition = () => {
@@ -191,10 +193,15 @@ class PrayTimes {
   };
 
   protected numbreToTime = (n: number) => {
-    const hours = Math.trunc(n);
-    const minutes = Math.ceil((n - hours) * 60);
-    return `${hours < 10 ? "0" + hours : this.adjustTimes(hours)}:${minutes < 10 ? "0" + minutes : minutes
+    try {
+      const hours = Math.trunc(n);
+      const minutes = Math.ceil((n - hours) * 60);
+      return `${hours < 10 ? "0" + hours : this.adjustTimes(hours)}:${
+        minutes < 10 ? "0" + minutes : minutes
       }`;
+    } catch (error: any) {
+      throw new Error(error);
+    }
   };
 
   private dhuhrTime = () => {
@@ -209,7 +216,7 @@ class PrayTimes {
     try {
       return this.arctan(
         this.factors[this.config.madhab as any] +
-        this.tan(this.localisation.lat - (this.declination as number))
+          this.tan(this.localisation.lat - (this.declination as number))
       );
     } catch (error: any) {
       throw new Error(error);
@@ -230,9 +237,9 @@ class PrayTimes {
       return this.arccos(
         (this.sin(angle) -
           this.sin(this.declination as number) *
-          this.sin(this.localisation.lat)) /
-        (this.cos(this.declination as number) *
-          this.cos(this.localisation.lat))
+            this.sin(this.localisation.lat)) /
+          (this.cos(this.declination as number) *
+            this.cos(this.localisation.lat))
       );
     } catch (error: any) {
       throw new Error(error);

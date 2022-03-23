@@ -1,6 +1,6 @@
 {
   "name": "@meksiabdou/pray-times",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "مواقيت الصلاة",
   "main": "index.js",
   "scripts": {
