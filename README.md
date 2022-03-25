@@ -34,7 +34,7 @@ import PrayTimes from "@meksiabdou/pray-times/dist";
 | Name | Type | Default Value |
 |:------:|:------:|:---------------:|
 | localisation | {lat : number, long: number} | {lat : 0, long: 0} |
-| config | {method : string, madhab: string, date: {day: number; month: number; year: number}} | {method : "MWL", madhab: "chafiism", date: {day: 10; month: 3; year: 2022}} |
+| config | {method : string, madhab: string, timeZone?: number; date?: {day: number; month: number; year: number}} | {method : "MWL", madhab: "chafiism",timeZone : undefined date: undefined} |
 
 
 ### Example
