@@ -13,6 +13,7 @@ export interface Config {
     method?: "MWL" | "ISNA" | "Egypt" | "Makkah" | "Karachi" | "Tehran" | "Jafari";
     madhab?: "hanafi" | "chafiism";
     date?: DateNow;
+    timeZone?: number;
 }
 export interface Times {
     imsak: string;

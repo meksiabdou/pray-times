@@ -133,8 +133,12 @@ class PrayTimes {
         };
         this.numbreToTime = (n) => {
             try {
-                const hours = Math.trunc(n);
-                const minutes = Math.ceil((n - hours) * 60);
+                let hours = Math.trunc(n);
+                let minutes = Math.ceil((n - hours) * 60);
+                if (minutes >= 60) {
+                    hours = hours + 1;
+                    minutes = 0;
+                }
                 return `${hours < 10 ? "0" + hours : this.adjustTimes(hours)}:${minutes < 10 ? "0" + minutes : minutes}`;
             }
             catch (error) {
@@ -273,15 +277,20 @@ class PrayTimes {
         }
         if (typeof (localisation === null || localisation === void 0 ? void 0 : localisation.long) === "number") {
             this.localisation.long = localisation.long;
+        }
+        if (!(config === null || config === void 0 ? void 0 : config.timeZone)) {
             this.config.timeZone = Math.round(this.localisation.long / 15);
         }
-        if (config && typeof ((_a = config.date) === null || _a === void 0 ? void 0 : _a.day) === 'number' && ((_b = config.date) === null || _b === void 0 ? void 0 : _b.day)) {
+        else if (typeof (config === null || config === void 0 ? void 0 : config.timeZone) === 'number') {
+            this.config.timeZone = config === null || config === void 0 ? void 0 : config.timeZone;
+        }
+        if (typeof ((_a = config === null || config === void 0 ? void 0 : config.date) === null || _a === void 0 ? void 0 : _a.day) === 'number' && ((_b = config === null || config === void 0 ? void 0 : config.date) === null || _b === void 0 ? void 0 : _b.day)) {
             this.day = (_c = config.date) === null || _c === void 0 ? void 0 : _c.day;
         }
-        if (config && typeof ((_d = config.date) === null || _d === void 0 ? void 0 : _d.month) === 'number' && ((_e = config.date) === null || _e === void 0 ? void 0 : _e.month)) {
+        if (typeof ((_d = config === null || config === void 0 ? void 0 : config.date) === null || _d === void 0 ? void 0 : _d.month) === 'number' && ((_e = config === null || config === void 0 ? void 0 : config.date) === null || _e === void 0 ? void 0 : _e.month)) {
             this.month = config.date.month;
         }
-        if (config && typeof ((_f = config.date) === null || _f === void 0 ? void 0 : _f.year) === 'number' && ((_g = config.date) === null || _g === void 0 ? void 0 : _g.year)) {
+        if (typeof ((_f = config === null || config === void 0 ? void 0 : config.date) === null || _f === void 0 ? void 0 : _f.year) === 'number' && ((_g = config === null || config === void 0 ? void 0 : config.date) === null || _g === void 0 ? void 0 : _g.year)) {
             this.year = config.date.year;
         }
         if ((config === null || config === void 0 ? void 0 : config.madhab) &&

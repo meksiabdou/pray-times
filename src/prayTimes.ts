@@ -76,18 +76,23 @@ class PrayTimes {
 
     if (typeof localisation?.long === "number") {
       this.localisation.long = localisation.long;
-      this.config.timeZone = Math.round(this.localisation.long / 15);
     }
 
-    if (config && typeof config.date?.day === 'number' && config.date?.day) {
+    if(!config?.timeZone) {
+      this.config.timeZone = Math.round(this.localisation.long / 15);
+    } else if (typeof config?.timeZone === 'number') {
+      this.config.timeZone = config?.timeZone;
+    }
+    
+    if (typeof config?.date?.day === 'number' && config?.date?.day) {
       this.day = config.date?.day;
     }
 
-    if (config && typeof config.date?.month === 'number' && config.date?.month) {
+    if (typeof config?.date?.month === 'number' && config?.date?.month) {
       this.month = config.date.month;
     }
 
-    if (config && typeof config.date?.year === 'number' && config.date?.year) {
+    if (typeof config?.date?.year === 'number' && config?.date?.year) {
       this.year = config.date.year;
     }
 
@@ -193,9 +198,13 @@ class PrayTimes {
   };
 
   protected numbreToTime = (n: number) => {
-    try {
-      const hours = Math.trunc(n);
-      const minutes = Math.ceil((n - hours) * 60);
+    try {    
+      let hours = Math.trunc(n);
+      let minutes = Math.ceil((n - hours) * 60);
+      if(minutes >= 60) {
+        hours = hours + 1;
+        minutes = 0;
+      }
       return `${hours < 10 ? "0" + hours : this.adjustTimes(hours)}:${
         minutes < 10 ? "0" + minutes : minutes
       }`;

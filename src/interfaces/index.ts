@@ -24,7 +24,7 @@ export interface Config {
     | "Jafari";
   madhab?: "hanafi" | "chafiism";
   date?: DateNow;
-  // timeZone?: number;
+  timeZone?: number;
 }
 
 export interface Times {
